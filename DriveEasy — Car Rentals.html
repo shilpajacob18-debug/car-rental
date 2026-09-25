@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DriveEasy — Car Rentals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAFC; --surface:#FFFFFF; --surface-alt:#F4F1FE; --border:#E7E4F3;
+    --text:#161320; --text-soft:#5B5768;
+    --primary:#5B34EA; --primary-dark:#4324B8; --primary-soft:#EFE9FF; --accent:#22C48A;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121018; --surface:#1A1722; --surface-alt:#211D2E; --border:#2C2838;
+      --text:#F3F1FA; --text-soft:#B4AFC4; --primary:#8467F5; --primary-dark:#6B4CEE; --primary-soft:#241E38;
+    }
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,-apple-system,sans-serif; line-height:1.55;}
+  a{color:inherit;} img{max-width:100%;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  header.nav{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding-top:env(safe-area-inset-top,0px);}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:18px 24px; max-width:1080px; margin:0 auto;}
+  .logo{font-weight:800; font-size:19px; letter-spacing:-0.02em;}
+  .logo span{color:var(--primary);}
+  .nav-links{display:flex; gap:28px; font-size:14.5px; color:var(--text-soft); font-weight:500;}
+  .nav-links a:hover{color:var(--text);}
+  @media (max-width:720px){ .nav-links{display:none;} }
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:600; font-size:14.5px; text-decoration:none; border:1px solid transparent; cursor:pointer; white-space:nowrap;}
+  .btn-primary{background:var(--primary); color:#fff;} .btn-primary:hover{background:var(--primary-dark);}
+  .btn-outline{background:transparent; color:var(--text); border-color:var(--border);} .btn-outline:hover{border-color:var(--primary); color:var(--primary);}
+
+  .hero{padding:72px 0 50px; text-align:center;}
+  .eyebrow{display:inline-block; font-size:13px; font-weight:600; color:var(--primary); background:var(--primary-soft); padding:6px 14px; border-radius:999px; margin-bottom:22px;}
+  h1{font-size:clamp(32px,5vw,50px); line-height:1.12; letter-spacing:-0.02em; margin:0 0 18px; font-weight:800;}
+  .hero p.lead{font-size:18px; color:var(--text-soft); max-width:600px; margin:0 auto 34px;}
+
+  .search-card{margin:0 auto; max-width:900px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px; box-shadow:0 30px 60px -30px rgba(91,52,234,0.22); text-align:left;}
+  .search-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr auto; gap:14px; align-items:end;}
+  @media (max-width:760px){ .search-grid{grid-template-columns:1fr 1fr;} }
+  .field label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:6px;}
+  .field .box{background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:11px 12px; font-size:14px;}
+  .search-grid .btn{width:100%; padding:13px;}
+
+  section{padding:60px 0;}
+  .section-head{max-width:620px; margin:0 auto 40px; text-align:center;}
+  .section-head h2{font-size:clamp(26px,3.4vw,34px); letter-spacing:-0.02em; margin:0 0 12px; font-weight:800;}
+  .section-head p{color:var(--text-soft); font-size:16px; margin:0;}
+
+  .fleet-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:900px){ .fleet-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:640px){ .fleet-grid{grid-template-columns:1fr;} }
+  .fleet-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px;}
+  .car-icon{height:100px; border-radius:12px; background:var(--surface-alt); display:flex; align-items:center; justify-content:center; margin-bottom:16px;}
+  .fleet-card h3{margin:0 0 6px; font-size:17px;}
+  .fleet-card .price{color:var(--primary); font-weight:700; font-size:15px; margin-bottom:8px;}
+  .fleet-card p{margin:0; color:var(--text-soft); font-size:14px;}
+
+  .steps-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:760px){ .steps-grid{grid-template-columns:1fr;} }
+  .step-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:26px;}
+  .step-num{width:36px; height:36px; border-radius:10px; background:var(--primary-soft); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:800; margin-bottom:16px;}
+  .step-card h3{margin:0 0 8px; font-size:17px;}
+  .step-card p{margin:0; color:var(--text-soft); font-size:14.5px;}
+
+  .why-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  @media (max-width:900px){ .why-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .why-grid{grid-template-columns:1fr;} }
+  .why-card{text-align:center; padding:20px;}
+  .why-icon{width:46px; height:46px; border-radius:12px; background:var(--primary-soft); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-weight:800;}
+  .why-card h4{margin:0 0 6px; font-size:15px;}
+  .why-card p{margin:0; color:var(--text-soft); font-size:13.5px;}
+
+  .cta-final{text-align:center; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border-radius:24px; padding:56px 24px; margin:0 24px; color:#fff;}
+  .cta-final h2{font-size:clamp(24px,3.4vw,34px); margin:0 0 12px; font-weight:800;}
+  .cta-final p{margin:0 0 26px; color:rgba(255,255,255,0.85); font-size:16px;}
+  .cta-final .hero-actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .cta-final .btn-outline{border-color:rgba(255,255,255,0.5); color:#fff;} .cta-final .btn-outline:hover{border-color:#fff; background:rgba(255,255,255,0.1);}
+  .cta-final .btn-primary{background:#fff; color:var(--primary-dark);} .cta-final .btn-primary:hover{background:#f2f0ff;}
+
+  footer{padding:40px 24px 48px; text-align:center; color:var(--text-soft); font-size:13.5px;}
+  footer a{color:var(--text-soft); text-decoration:none;} footer a:hover{color:var(--primary);}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">Drive<span>Easy</span></div>
+    <nav class="nav-links">
+      <a href="#fleet">Fleet</a>
+      <a href="#how">How it works</a>
+      <a href="#why">Why us</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#search">Book a car</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <span class="eyebrow">Car Rentals, Simplified</span>
+  <h1>Rent the right car, wherever you're headed</h1>
+  <p class="lead">Compare cars, lock in a price, and pick up the keys in minutes. No hidden fees, no waiting in line.</p>
+
+  <div id="search" class="search-card">
+    <div class="search-grid">
+      <div class="field"><label>Pick-up location</label><div class="box">Kochi Airport, Kerala</div></div>
+      <div class="field"><label>Pick-up date</label><div class="box">Sep 28, 10:00 AM</div></div>
+      <div class="field"><label>Return date</label><div class="box">Oct 02, 10:00 AM</div></div>
+      <a class="btn btn-primary" href="#fleet">Search cars</a>
+    </div>
+  </div>
+</section>
+
+<section id="fleet" class="wrap">
+  <div class="section-head">
+    <span class="eyebrow">Our fleet</span>
+    <h2>A car for every kind of trip</h2>
+    <p>From city runabouts to spacious SUVs, all fully insured and sanitized before every rental.</p>
+  </div>
+  <div class="fleet-grid">
+    <div class="fleet-card"><div class="car-icon">🚗</div><h3>Economy</h3><div class="price">₹1,499 / day</div><p>Compact, fuel-efficient, perfect for city driving.</p></div>
+    <div class="fleet-card"><div class="car-icon">🚙</div><h3>SUV</h3><div class="price">₹2,999 / day</div><p>Extra space and comfort for family trips.</p></div>
+    <div class="fleet-card"><div class="car-icon">🏎️</div><h3>Luxury</h3><div class="price">₹5,499 / day</div><p>Premium sedans for business and special occasions.</p></div>
+    <div class="fleet-card"><div class="car-icon">🚐</div><h3>Minivan</h3><div class="price">₹3,499 / day</div><p>Seats up to 7, ideal for group travel.</p></div>
+    <div class="fleet-card"><div class="car-icon">⚡</div><h3>Electric</h3><div class="price">₹2,799 / day</div><p>Zero-emission rides with fast-charging support.</p></div>
+    <div class="fleet-card"><div class="car-icon">🚚</div><h3>Pickup Truck</h3><div class="price">₹3,199 / day</div><p>Built for cargo, moving, and heavy loads.</p></div>
+  </div>
+</section>
+
+<section id="how" class="wrap">
+  <div class="section-head">
+    <span class="eyebrow">How it works</span>
+    <h2>Booking takes less than 2 minutes</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card"><div class="step-num">1</div><h3>Choose your car</h3><p>Pick your dates, location, and the car that fits your trip.</p></div>
+    <div class="step-card"><div class="step-num">2</div><h3>Confirm instantly</h3><p>Pay securely online and get an instant confirmation.</p></div>
+    <div class="step-card"><div class="step-num">3</div><h3>Pick up & drive</h3><p>Skip the counter, grab your keys, and hit the road.</p></div>
+  </div>
+</section>
+
+<section id="why" class="wrap">
+  <div class="section-head">
+    <span class="eyebrow">Why DriveEasy</span>
+    <h2>Rental, without the hassle</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-icon">✓</div><h4>No hidden fees</h4><p>The price you see is the price you pay.</p></div>
+    <div class="why-card"><div class="why-icon">🛡</div><h4>Full insurance</h4><p>Every rental comes fully covered.</p></div>
+    <div class="why-card"><div class="why-icon">⏱</div><h4>24/7 support</h4><p>Roadside help whenever you need it.</p></div>
+    <div class="why-card"><div class="why-icon">↩</div><h4>Free cancellation</h4><p>Change your mind up to 24 hours before pick-up.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="cta-final">
+    <h2>Ready for the road?</h2>
+    <p>Find your car and get moving in minutes.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#search">Book a car</a>
+      <a class="btn btn-outline" href="#fleet">Browse fleet</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 DriveEasy. All rights reserved. · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Contact us</a>
+</footer>
+
+</body>
+</html>
